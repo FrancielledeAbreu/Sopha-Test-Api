@@ -1,5 +1,4 @@
 class AuthenticationController < ApplicationController
-  skip_before_action :authorized
   def register
     @user = User.new(user_params)
 
