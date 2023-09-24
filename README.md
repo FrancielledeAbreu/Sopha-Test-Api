@@ -153,7 +153,7 @@ json
   ...
 ]
 ```
-######Obter detalhes de uma loja específica
+###### Obter detalhes de uma loja específica
 Endpoint: GET base_url/stores/:id
 Headers: Authorization: Bearer [token]
 Response:
@@ -167,7 +167,7 @@ json
 	"updated_at": "2023-09-24T00:37:49.307Z"
 }
 ```
-######Criar uma nova loja
+###### Criar uma nova loja
 Endpoint: POST base_url/stores
 Headers: Authorization: Bearer [token]
 Body:
@@ -225,7 +225,7 @@ Cliquei em "Launch Instance" e selecionei a AMI desejada
 Escolhi um tipo de instância como t2.medium
 Configurei o Security Group e Volumes.
 
-######Comandos para acessar SSh instância EC2:
+###### Comandos para acessar SSh instância EC2:
 
 **2. Criei o pem_file**
 ```
