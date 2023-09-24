@@ -1,4 +1,5 @@
 FROM ruby:2.7.1
+RUN gem install bundler:2.3.19
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile

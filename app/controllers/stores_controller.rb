@@ -1,4 +1,3 @@
-# app/controllers/stores_controller.rb
 class StoresController < AuthenticatedController
   include ErrorHandler
 
@@ -17,13 +16,13 @@ class StoresController < AuthenticatedController
 
   # POST /stores
   def create
-    @store = current_user.stores.create!(store_params) # This will raise ActiveRecord::RecordInvalid if save fails
+    @store = current_user.stores.create!(store_params)
     render json: @store, status: :created
   end
 
   # PATCH/PUT /stores/1
   def update
-    @store.update!(store_params) # This will raise ActiveRecord::RecordInvalid if update fails
+    @store.update!(store_params)
     render json: @store
   end
 
@@ -36,7 +35,7 @@ class StoresController < AuthenticatedController
   private
 
   def set_store
-    @store = current_user.stores.find(params[:id]) # This will raise ActiveRecord::RecordNotFound if not found
+    @store = current_user.stores.find(params[:id])
   end
 
   def store_params
