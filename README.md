@@ -1,5 +1,5 @@
 
-## Francielle Sophia Test
+## Francielle Sopha Test
 
 Descrição do teste: [https://github.com/BrunoSDias/Sopha-Test-Api]
 
