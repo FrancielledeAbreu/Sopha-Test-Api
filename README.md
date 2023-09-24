@@ -32,9 +32,15 @@ Para rodar os testes, execute:
 docker-compose run web rspec
 ```
 ####📌 API Endpoints
+####base_url
+Local:http://localhost:3000
+Produção: http://ec2-3-137-178-138.us-east-2.compute.amazonaws.com
+
+*Obs: utilizar http, pois não foi adquirido um certificado SSL.*
+
 #####Autenticação
 ######Registro
-Endpoint: POST /register
+Endpoint: POST base_url/register
 
 ```
 Body:
@@ -60,7 +66,7 @@ json
 }
 ```
 ######Login
-Endpoint: POST /login
+Endpoint: POST base_url/login
 ```
 Body:
 json
@@ -80,7 +86,7 @@ json
 ```
 ######Usuários
 ######Obter detalhes do usuário autenticado
-Endpoint: GET /user
+Endpoint: GET base_url/user
 Headers: Authorization: Bearer [token]
 Success Response:
 Code: 200 OK
@@ -100,7 +106,7 @@ Content: { "error": "Not authorized" }
 ```
 
 ######Obter as lojas do usuário autenticado
-Endpoint: GET /user/stores
+Endpoint: GET base_url/user/stores
 Headers: Authorization: Bearer [token]
 Success Response:
 Code: 200 OK
@@ -129,7 +135,7 @@ Content: { "error": "Not authorized" }
 ```
 #####Lojas
 ######Obter todas as lojas do usuário autenticado
-Endpoint: GET /stores
+Endpoint: GET base_url/stores
 Headers: Authorization: Bearer [token]
 
 Response:
@@ -147,7 +153,7 @@ json
 ]
 ```
 ######Obter detalhes de uma loja específica
-Endpoint: GET /stores/:id
+Endpoint: GET base_url/stores/:id
 Headers: Authorization: Bearer [token]
 Response:
 json
@@ -161,7 +167,7 @@ json
 }
 ```
 ######Criar uma nova loja
-Endpoint: POST /stores
+Endpoint: POST base_url/stores
 Headers: Authorization: Bearer [token]
 Body:
 json
@@ -179,7 +185,7 @@ json
 }
 ```
 ######Atualizar uma loja
-Endpoint: PUT /stores/:id
+Endpoint: PUT base_url/stores/:id
 Headers: Authorization: Bearer [token]
 Body:
 json
@@ -197,7 +203,7 @@ json
 }
 ```
 ######Deletar uma loja
-Endpoint: DELETE /stores/:id
+Endpoint: DELETE base_url/stores/:id
 Headers: Authorization: Bearer [token]
 ```
 Response:
@@ -205,6 +211,57 @@ json
 {
   "message": "Store deleted successfully"
 }
+```
 
+###Deploy   ![Deploy](https://img.shields.io/badge/Deploy-success-brightgreen)
 
+O Deploy foi realizado em uma Instância EC2, segue o passo a passo de como foi realizado:
+
+**1. Criei uma instância EC2:**
+
+Acessei o AWS Management Console e fui para o serviço EC2.
+Cliquei em "Launch Instance" e selecionei a AMI desejada
+Escolhi um tipo de instância como t2.medium
+Configurei o Security Group e Volumes.
+
+######Comandos para acessar SSh instância EC2:
+
+**2. Criei o pem_file**
+```
+chmod 0400 PEM_FILE.pem
+```
+
+No console da instância
+```
+ssh -i PEM_FILE.pem ec2-user@PUBLIC_IP
+```
+
+**3. Instalei Aas dependêcias**
+Instalei docker, docker-compose e ngnix
+
+**4. Transferi os arquivos**
+```
+scp -i ~/PEM_FILE.pem -r file ec2-user@PUBLIC_IP:file
+```
+
+Além de criar banco e rodar a migrations dentro do volume da instância
+
+**4. Configurei Ngnix**
+Foi necessário adicionar as configurações do Ngnix:
+```
+server {
+    listen 80;
+    server_name PUBLIC_IP;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+```
+sudo systemctl restart nginx
+```
 
