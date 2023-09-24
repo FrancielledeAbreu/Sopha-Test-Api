@@ -12,7 +12,7 @@ O que você precisa para instalar o software:
 [Docker](https://www.docker.com/)
 [Docker Compose](https://docs.docker.com/compose/)
 
-####Instalação
+#### Instalação
 Clone o repositório:
 ```
 git clone git@github.com:FrancielledeAbreu/Sopha-Test-Api.git
@@ -26,20 +26,20 @@ Construa e inicie os serviços usando Docker Compose:
 docker-compose up --build
 ```
 
-####🧪 Testes
+#### 🧪 Testes
 Para rodar os testes, execute:
 ```
 docker-compose run web rspec
 ```
-####📌 API Endpoints
-####base_url
+#### 📌 API Endpoints
+#### base_url
 Local:http://localhost:3000
 Produção: http://ec2-3-137-178-138.us-east-2.compute.amazonaws.com
 
 *Obs: utilizar http, pois não foi adquirido um certificado SSL.*
 
-#####Autenticação
-######Registro
+##### Autenticação
+###### Registro
 Endpoint: POST base_url/register
 
 ```
@@ -65,7 +65,8 @@ json
   }
 }
 ```
-######Login
+###### Login
+
 Endpoint: POST base_url/login
 ```
 Body:
@@ -84,8 +85,8 @@ json
   "token": "token"
 }
 ```
-######Usuários
-######Obter detalhes do usuário autenticado
+###### Usuários
+###### Obter detalhes do usuário autenticado
 Endpoint: GET base_url/user
 Headers: Authorization: Bearer [token]
 Success Response:
@@ -105,7 +106,7 @@ Code: 401 UNAUTHORIZED
 Content: { "error": "Not authorized" }
 ```
 
-######Obter as lojas do usuário autenticado
+###### Obter as lojas do usuário autenticado
 Endpoint: GET base_url/user/stores
 Headers: Authorization: Bearer [token]
 Success Response:
@@ -133,8 +134,8 @@ Code: 401 UNAUTHORIZED
 ```
 Content: { "error": "Not authorized" }
 ```
-#####Lojas
-######Obter todas as lojas do usuário autenticado
+##### Lojas
+###### Obter todas as lojas do usuário autenticado
 Endpoint: GET base_url/stores
 Headers: Authorization: Bearer [token]
 
@@ -184,7 +185,7 @@ json
   "name": "Nome da loja"
 }
 ```
-######Atualizar uma loja
+###### Atualizar uma loja
 Endpoint: PUT base_url/stores/:id
 Headers: Authorization: Bearer [token]
 Body:
@@ -202,7 +203,7 @@ json
   "name": "Nome atualizado da loja"
 }
 ```
-######Deletar uma loja
+###### Deletar uma loja
 Endpoint: DELETE base_url/stores/:id
 Headers: Authorization: Bearer [token]
 ```
@@ -213,7 +214,7 @@ json
 }
 ```
 
-###Deploy   ![Deploy](https://img.shields.io/badge/Deploy-success-brightgreen)
+### Deploy   ![Deploy](https://img.shields.io/badge/Deploy-success-brightgreen)
 
 O Deploy foi realizado em uma Instância EC2, segue o passo a passo de como foi realizado:
 
