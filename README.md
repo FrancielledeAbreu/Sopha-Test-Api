@@ -1,62 +1,210 @@
 
+## Francielle Sophia Test
 
-# Avaliação Sopha
-## Para iniciar
-Realize um **fork** desse repositório
-**clone** o projeto do fork
+Descrição do teste: [https://github.com/BrunoSDias/Sopha-Test-Api]
 
-Execute o comando para provisionar a aplicação:
+🚀 Começando
+Estas instruções fornecerão uma cópia do projeto em execução na sua máquina local para fins de desenvolvimento e teste.
 
-    $ docker-compose up --build
+Pré-requisitos
+O que você precisa para instalar o software:
 
-## Sobre
-O candidato deve fazer um **fork** deste repositório e realizar um **pull request** com o código do teste pronto antes do prazo de vencimento do desafio.
+[Docker](https://www.docker.com/)
+[Docker Compose](https://docs.docker.com/compose/)
 
-## Objetivo
+####Instalação
+Clone o repositório:
+```
+git clone git@github.com:FrancielledeAbreu/Sopha-Test-Api.git
+```
+Navegue até a pasta do projeto:
+```
+cd Sopha-Test-Api
+```
+Construa e inicie os serviços usando Docker Compose:
+```
+docker-compose up --build
+```
 
-O candidato deve criar uma **API** responsável por gerenciar um catalogo de lojas (**Store**)  e hospedá-lo em uma instância **AWS EC2**.
+####🧪 Testes
+Para rodar os testes, execute:
+```
+docker-compose run web rspec
+```
+####📌 API Endpoints
+#####Autenticação
+######Registro
+Endpoint: POST /register
 
-## Estrutura
-Essa **API** deve ser constituída por:
+```
+Body:
+json
+{
+  "name": "Nome",
+  "email": "email@example.com",
+  "password": "senha123"
+}
+```
+Response:
+Success Response:
+Code: 200 OK
+```
+json
+{
+  "token": "token",
+  "user": {
+    "id": 1,
+    "email": "email@example.com",
+    "name": "Nome"
+  }
+}
+```
+######Login
+Endpoint: POST /login
+```
+Body:
+json
+{
+  "email": "email@example.com",
+  "password": "senha123"
+}
+```
+Response:
+Success Response:
+Code: 200 OK
+```
+json
+{
+  "token": "token"
+}
+```
+######Usuários
+######Obter detalhes do usuário autenticado
+Endpoint: GET /user
+Headers: Authorization: Bearer [token]
+Success Response:
+Code: 200 OK
+```
+Content:
+json
+{
+  "id": 1,
+  "email": "email@example.com",
+  "name": "Nome"
+}
+```
+Error Responses:
+Code: 401 UNAUTHORIZED
+```
+Content: { "error": "Not authorized" }
+```
 
- - Um Model **User** com os atributos **name, email e password**
- - Um Model **Store** com os atributos **name, user_id**
- -  Onde:
-	 - **Store** pertence à **User**
-	 
-## Funcionalidade
-As seguintes requisições devem ser possíveis:
+######Obter as lojas do usuário autenticado
+Endpoint: GET /user/stores
+Headers: Authorization: Bearer [token]
+Success Response:
+Code: 200 OK
+```
+[
+	{
+		"id": 3,
+		"name": "Teste ",
+		"user_id": 4,
+		"created_at": "2023-09-23T13:10:47.677Z",
+		"updated_at": "2023-09-23T13:10:47.677Z"
+	},
+	{
+		"id": 4,
+		"name": "Teste ",
+		"user_id": 4,
+		"created_at": "2023-09-24T00:14:36.888Z",
+		"updated_at": "2023-09-24T00:14:36.888Z"
+	}
+]
+```
+Error Responses:
+Code: 401 UNAUTHORIZED
+```
+Content: { "error": "Not authorized" }
+```
+#####Lojas
+######Obter todas as lojas do usuário autenticado
+Endpoint: GET /stores
+Headers: Authorization: Bearer [token]
 
- - Processo de autenticação de um **User** (Signup, Signin)
-  - Requisições de **CRUD** (Create, Read, Update, Delete) para **Store**  (Estas requisições só devem ser possíveis se o usuário estiver autenticado)
+Response:
+json
+```
+[
+	{
+		"id": 5,
+		"name": "Teste ",
+		"user_id": 2,
+		"created_at": "2023-09-24T00:37:49.307Z",
+		"updated_at": "2023-09-24T00:37:49.307Z"
+	},
+  ...
+]
+```
+######Obter detalhes de uma loja específica
+Endpoint: GET /stores/:id
+Headers: Authorization: Bearer [token]
+Response:
+json
+```
+{
+	"id": 5,
+	"name": "Teste ",
+	"user_id": 2,
+	"created_at": "2023-09-24T00:37:49.307Z",
+	"updated_at": "2023-09-24T00:37:49.307Z"
+}
+```
+######Criar uma nova loja
+Endpoint: POST /stores
+Headers: Authorization: Bearer [token]
+Body:
+json
+```
+{
+  "name": "Nome da loja"
+}
+```
+Response:
+json
+```
+{
+  "id": 1,
+  "name": "Nome da loja"
+}
+```
+######Atualizar uma loja
+Endpoint: PUT /stores/:id
+Headers: Authorization: Bearer [token]
+Body:
+json
+```
+{
+  "name": "Nome atualizado da loja"
+}
+```
+Response:
+json
+```
+{
+  "id": 1,
+  "name": "Nome atualizado da loja"
+}
+```
+######Deletar uma loja
+Endpoint: DELETE /stores/:id
+Headers: Authorization: Bearer [token]
+```
+Response:
+json
+{
+  "message": "Store deleted successfully"
+}
 
 
-## Conhecimentos necessários
--  Ruby
--  Ruby on Rails
--  AWS EC2
--  Servidores HTTP
--  SQL
--  Postgres 
--   Git
 
-## Requisitos
-
--   Docker
-
-## O que esperamos da solução
- -  A aplicacão **DEVE** estar hospedada em uma instância **AWS EC2**
- -  Que todas as ações requisitadas funcionem.
- -  Que haja testes automatizados sobre essas ações (TDD).
- -  Que seja possível testar essas ações do ambiente local (Localhost) na **aplicação hospedada**.
- -  Instruções de uso no README.md
-	 - Como rodar os testes da aplicação
-	 - Quais os **endpoints** devo acessar para realizar as requisições esperadas na **aplicação hospedada**
-	 - Quais os **parâmetros** e/ou **cabeçalhos**  devo enviar para realizar cada uma das requisições esperadas na **aplicação hospedada**
- -  É **Opcional** utilizar **docker** na **aplicação hospedada**.
- - Uso de **gems** adicionais também é opcional
-
-## O que avaliaremos
-
- - Funcionalidade
- - Boas práticas
